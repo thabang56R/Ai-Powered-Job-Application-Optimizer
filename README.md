@@ -1,3 +1,5 @@
+![CI](https://github.com/thabang56R/Ai-Powered-Job-Application-Optimizer/actions/workflows/ci.yml/badge.svg)
+
 # HireLens — AI Resume Screening + Semantic Ranking (MERN-style, .NET + React)
 
 HireLens is an AI-assisted recruitment tool:
