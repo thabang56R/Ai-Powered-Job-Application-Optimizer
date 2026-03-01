@@ -1,48 +1,54 @@
-Run API:
 
-dotnet run --project HireLens.Api
+---
 
-API Swagger:
 
-http://localhost:5159/swagger
- (port may differ)
+Create `.github/workflows/ci.yml`:
 
-Frontend
-cd HireLens.Web
-npm install
-npm run dev
-Docker Compose
+```yaml
+name: CI
 
-From repo root:
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
 
-docker compose up --build
+jobs:
+  backend:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
 
-Web: http://localhost:3000
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: "8.0.x"
 
-API: http://localhost:8080/swagger
+      - name: Restore
+        run: dotnet restore
 
-Key Endpoints
+      - name: Build
+        run: dotnet build -c Release --no-restore
 
-POST /api/auth/register
+      - name: Test
+        run: dotnet test -c Release --no-build
 
-POST /api/auth/login
+  frontend:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
 
-GET /api/candidates
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+          cache-dependency-path: HireLens.Web/package-lock.json
 
-POST /api/resumes/upload (multipart form-data: candidateId, file)
+      - name: Install
+        working-directory: HireLens.Web
+        run: npm ci
 
-POST /api/evaluations/jobs
-
-POST /api/evaluations
-
-GET /api/rankings/jobs/{jobId}/candidates
-
-GET /api/rankings/jobs/{jobId}/candidates/{candidateId}/explain
-
-Tests
-dotnet test
-Notes
-
-If OpenAI key is not configured, evaluation/embeddings endpoints return a short 400 error.
-
-PDF text extraction works for text-based PDFs (scanned/image PDFs require OCR).
+      - name: Build
+        working-directory: HireLens.Web
+        run: npm run build
