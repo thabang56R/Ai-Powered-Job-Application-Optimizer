@@ -1,0 +1,48 @@
+Run API:
+
+dotnet run --project HireLens.Api
+
+API Swagger:
+
+http://localhost:5159/swagger
+ (port may differ)
+
+Frontend
+cd HireLens.Web
+npm install
+npm run dev
+Docker Compose
+
+From repo root:
+
+docker compose up --build
+
+Web: http://localhost:3000
+
+API: http://localhost:8080/swagger
+
+Key Endpoints
+
+POST /api/auth/register
+
+POST /api/auth/login
+
+GET /api/candidates
+
+POST /api/resumes/upload (multipart form-data: candidateId, file)
+
+POST /api/evaluations/jobs
+
+POST /api/evaluations
+
+GET /api/rankings/jobs/{jobId}/candidates
+
+GET /api/rankings/jobs/{jobId}/candidates/{candidateId}/explain
+
+Tests
+dotnet test
+Notes
+
+If OpenAI key is not configured, evaluation/embeddings endpoints return a short 400 error.
+
+PDF text extraction works for text-based PDFs (scanned/image PDFs require OCR).
