@@ -5,6 +5,7 @@
 ![OpenAI](https://img.shields.io/badge/OpenAI-Embeddings_%2B_AI-black)
 ![License](https://img.shields.io/badge/License-MIT-green)
 
+
 # HireLens — AI Resume Screening + Semantic Ranking (MERN-style, .NET + React)
 
 HireLens is an AI-assisted recruitment tool:
