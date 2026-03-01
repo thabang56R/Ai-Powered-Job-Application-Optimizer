@@ -1,4 +1,9 @@
 ![CI](https://github.com/thabang56R/Ai-Powered-Job-Application-Optimizer/actions/workflows/ci.yml/badge.svg)
+![.NET](https://img.shields.io/badge/.NET-8.0-purple)
+![React](https://img.shields.io/badge/React-18-blue)
+![Docker](https://img.shields.io/badge/Docker-Ready-blue)
+![OpenAI](https://img.shields.io/badge/OpenAI-Embeddings_%2B_AI-black)
+![License](https://img.shields.io/badge/License-MIT-green)
 
 # HireLens — AI Resume Screening + Semantic Ranking (MERN-style, .NET + React)
 
