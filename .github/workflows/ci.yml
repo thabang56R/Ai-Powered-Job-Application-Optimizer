@@ -1,15 +1,13 @@
-
 name: CI
 
 on:
   push:
-    branches: [ "main" ]
+    branches: ["main"]
   pull_request:
-    branches: [ "main" ]
+    branches: ["main"]
 
 jobs:
- 
-    backend:
+  backend:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -31,7 +29,7 @@ jobs:
       - name: Test
         run: dotnet test HireLens.Api.Tests/HireLens.Api.Tests.csproj -c Release --no-restore
 
-    frontend:
+  frontend:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
