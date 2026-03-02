@@ -45,7 +45,7 @@ builder.Services.AddSwaggerGen(c =>
 // Database
 builder.Services.AddDbContext<AppDbContext>(opt =>
 {
-    opt.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
+    opt.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
 
 // Services
@@ -91,6 +91,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     });
 
 builder.Services.AddAuthorization();
+
 
 // Bind to Render's PORT
 var port = Environment.GetEnvironmentVariable("PORT");
