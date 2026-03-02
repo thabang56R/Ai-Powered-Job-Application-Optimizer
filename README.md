@@ -88,3 +88,7 @@ Notes
 If OpenAI key is not configured, evaluation/embeddings endpoints return a short 400 error.
 
 PDF text extraction works for text-based PDFs (scanned/image PDFs require OCR).
+
+👨‍💻 Author
+Thabang Rakeng
+Full-Stack Developer | AI-Focused Backend Engineer
