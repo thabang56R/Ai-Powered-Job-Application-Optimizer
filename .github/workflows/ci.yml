@@ -12,10 +12,17 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Setup .NET
+      - name: Setup .NET 8
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: "8.0.x"
+
+      - name: Debug info
+        run: |
+          dotnet --info
+          ls -la
+          ls -la .github/workflows || true
+          ls -la HireLens.Api || true
 
       - name: Restore (API)
         run: dotnet restore HireLens.Api/HireLens.Api.csproj
@@ -38,8 +45,6 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: "20"
-          cache: "npm"
-          cache-dependency-path: HireLens.Web/package-lock.json
 
       - name: Install
         working-directory: HireLens.Web
