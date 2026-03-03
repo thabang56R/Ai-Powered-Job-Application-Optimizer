@@ -8,6 +8,10 @@
 
 # HireLens — AI Resume Screening + Semantic Ranking (FULLSTACK-project, .NET + React)
 
+🌟 Vision
+
+HireLens aims to redefine modern recruitment by combining intelligent automation, AI-powered evaluation, and transparent decision-making into a single seamless platform. The vision is to empower recruiters to make faster, smarter, and data-driven hiring decisions while giving candidates a fair, evidence-based evaluation process. By integrating AI scoring, explainability, and structured workflows, HireLens strives to bridge the gap between human intuition and machine intelligence in the hiring ecosystem
+
 HireLens is an AI-assisted recruitment tool:
 - Upload candidate resume PDFs (text extraction)
 - Create job postings
