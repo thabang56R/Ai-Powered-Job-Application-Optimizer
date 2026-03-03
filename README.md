@@ -8,11 +8,13 @@
 
 # HireLens — AI Resume Screening + Semantic Ranking (FULLSTACK-project, .NET + React)
 
-🚀 HireLens – AI-Powered Job Application Optimizer
+# 🚀 HireLens – AI-Powered Job Application Optimizer
 
-An enterprise-grade AI recruitment platform designed to modernize hiring through intelligent automation, AI-powered evaluation, and transparent decision-making.
+HireLens is an enterprise-grade AI recruitment platform designed to modernize hiring through intelligent automation, AI-powered evaluation, and transparent decision-making.
 
-🌟 Vision
+---
+
+## 🌟 Vision
 
 HireLens aims to redefine modern recruitment by combining intelligent automation, AI-driven evaluation, and transparent decision-making into one seamless platform.
 
@@ -20,124 +22,107 @@ The mission is to empower recruiters to make faster, smarter, data-driven hiring
 
 By integrating AI scoring, explainability, and structured workflows, HireLens bridges the gap between human intuition and machine intelligence in the hiring ecosystem.
 
-🌍 Live Demo
+---
 
-Frontend (Vercel):
-https://ai-powered-job-application-optimizer-vupphwx74.vercel.app
+## 🌍 Live Demo
 
-Backend API (Render):
-https://ai-powered-job-application-optimizer.onrender.com/swagger
+**Frontend (Vercel):**  
+https://ai-powered-job-application-optimizer-vupphwx74.vercel.app  
 
-🏗 Architecture
+**Backend API (Render):**  
+https://ai-powered-job-application-optimizer.onrender.com/swagger  
 
-Frontend (Vercel)
-⬇
-Backend API (Render – Dockerized)
-⬇
+---
+
+## 🏗 Architecture
+
+Frontend (Vercel)  
+⬇  
+Backend API (Render – Dockerized)  
+⬇  
 PostgreSQL Database (Render Managed DB)
 
-🛠 Tech Stack
-Backend
+---
 
-ASP.NET Core 8
+## 🛠 Tech Stack
 
-Entity Framework Core
+### Backend
+- ASP.NET Core 8  
+- Entity Framework Core  
+- PostgreSQL (Npgsql)  
+- JWT Authentication  
+- Swagger  
 
-PostgreSQL (Npgsql)
+### Frontend
+- React (Vite)  
+- Axios  
+- JWT Token Storage  
 
-JWT Authentication
+### AI
+- OpenAI (Evaluation + Embeddings)
 
-Swagger
+### Infrastructure
+- Render (API + Database)  
+- Vercel (Frontend)  
+- GitHub Actions (CI/CD)  
+- Docker  
 
-Frontend
+---
 
-React (Vite)
+## ✨ Features
 
-Axios
+### 🔐 Authentication
+- JWT-based authentication  
+- Secure password hashing  
+- Role-based access ready  
 
-JWT Token Storage
+### 👤 Candidate Management
+- Create candidate  
+- Update status (New → Shortlisted → Interview → Hired → Rejected)  
+- Recruiter notes  
+- Audit logging  
 
-AI
+### 📄 Resume Upload
+- PDF-only upload (15MB max)  
+- Text extraction using PdfPig  
+- Cleaned text storage  
+- Ready for AI evaluation  
 
-OpenAI (Evaluation + Embeddings)
+### 🤖 AI Evaluation
+- OpenAI integration  
+- Skill extraction  
+- Match scoring  
+- Embedding generation  
+- Explainability service  
 
-Infrastructure
+### 📊 Ranking Engine
+- Score-based candidate ranking  
+- Evaluation tracking  
 
-Render (API + Database)
-
-Vercel (Frontend)
-
-GitHub Actions (CI/CD)
-
-Docker
-
-✨ Features
-🔐 Authentication
-
-JWT-based authentication
-
-Secure password hashing
-
-Role-based access ready
-
-👤 Candidate Management
-
-Create candidate
-
-Update status (New → Shortlisted → Interview → Hired → Rejected)
-
-Recruiter notes
-
-Audit logging
-
-📄 Resume Upload
-
-PDF-only upload (15MB max)
-
-Text extraction using PdfPig
-
-Cleaned text storage
-
-Ready for AI evaluation
-
-🤖 AI Evaluation
-
-OpenAI integration
-
-Skill extraction
-
-Match scoring
-
-Embedding generation
-
-Explainability service
-
-📊 Ranking Engine
-
-Score-based candidate ranking
-
-Evaluation tracking
-
-🧾 Audit Trail
-
+### 🧾 Audit Trail
 Tracks:
+- Who changed status  
+- Before/After snapshot  
+- Timestamp  
 
-Who changed status
+---
 
-Before/After snapshot
-
-Timestamp
-
-🐳 Docker
+## 🐳 Docker
 
 Build and run backend container:
 
+```bash
 docker build -t hirelens-api .
 docker run -p 8080:8080 hirelens-api
-⚙️ Environment Variables (Production)
+```
+
+---
+
+## ⚙️ Environment Variables (Production)
 
 Render backend requires:
 
+```env
 ConnectionStrings__DefaultConnection=Host=...;Port=5432;Database=...;Username=...;Password=...;SSL Mode=Require;Trust Server Certificate=true;
 
 Jwt__Key=VERY_LONG_SECRET_32+_CHARS
@@ -147,58 +132,81 @@ Jwt__Audience=HireLens
 OpenAI__ApiKey=sk-...
 OpenAI__Model=gpt-4o-mini
 OpenAI__EmbeddingModel=text-embedding-3-small
-🧪 CI/CD
+```
+
+---
+
+## 🧪 CI/CD
 
 GitHub Actions pipeline includes:
+- .NET Restore  
+- Build  
+- Tests  
+- Frontend Build  
 
-.NET Restore
+---
 
-Build
+## 💻 Local Setup (Without Docker)
 
-Tests
+### Backend
 
-Frontend Build
-
-💻 Local Setup (Without Docker)
-Backend
-
-Update HireLens.Api/appsettings.json:
-
-ConnectionStrings:DefaultConnection
-
-Jwt:Key (32+ characters)
-
-OpenAI:ApiKey (optional)
+Update `HireLens.Api/appsettings.json`:
+- ConnectionStrings:DefaultConnection  
+- Jwt:Key (32+ characters)  
+- OpenAI:ApiKey (optional)  
 
 Run migrations:
 
+```bash
 dotnet ef database update
+```
 
 Run API:
 
+```bash
 dotnet run --project HireLens.Api
+```
 
 Swagger:
-
+```
 http://localhost:5159/swagger
-Frontend
+```
+
+---
+
+### Frontend
+
+```bash
 cd HireLens.Web
 npm install
 npm run dev
-🐳 Docker Compose
+```
+
+---
+
+## 🐳 Docker Compose
 
 From repository root:
 
+```bash
 docker compose up --build
+```
 
 Web:
-
+```
 http://localhost:3000
+```
 
 API:
-
+```
 http://localhost:8080/swagger
-🔑 Key Endpoints
+```
+
+---
+
+## 🔑 Key Endpoints
+
+```
 POST /api/auth/register
 POST /api/auth/login
 GET  /api/candidates
@@ -207,33 +215,38 @@ POST /api/evaluations/jobs
 POST /api/evaluations
 GET  /api/rankings/jobs/{jobId}/candidates
 GET  /api/rankings/jobs/{jobId}/candidates/{candidateId}/explain
-🧪 Tests
+```
+
+---
+
+## 🧪 Tests
+
+```bash
 dotnet test
-📝 Notes
+```
 
-If OpenAI key is not configured, evaluation endpoints return a short 400 error.
+---
 
-PDF extraction works for text-based PDFs. Scanned/image PDFs require OCR.
+## 📝 Notes
 
-📌 Future Improvements
+- If OpenAI key is not configured, evaluation endpoints return a short 400 error.
+- PDF extraction works for text-based PDFs. Scanned/image PDFs require OCR.
 
-Role-based authorization (Admin / Recruiter)
+---
 
-Resume similarity search
+## 📌 Future Improvements
 
-Vector database integration
+- Role-based authorization (Admin / Recruiter)  
+- Resume similarity search  
+- Vector database integration  
+- Analytics dashboard  
+- AI interview question generator  
+- Production-grade logging (Serilog)  
+- Rate limiting  
 
-Analytics dashboard
+---
 
-AI interview question generator
+## 👨‍💻 Author
 
-Production-grade logging (Serilog)
-
-Rate limiting
-
-👨‍💻 Author
-
-Thabang Rakeng
-Full-Stack Developer | AI-Focused Backend Engineer
-
-
+**Thabang Rakeng**  
+Full-Stack Developer | AI-Focused Backend Engineer  
