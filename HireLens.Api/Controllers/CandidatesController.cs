@@ -26,13 +26,26 @@ public class CandidatesController : ControllerBase
     [HttpPost]
     public async Task<IActionResult> Create(CreateCandidateDto dto)
     {
+        if (string.IsNullOrWhiteSpace(dto.FullName))
+            return BadRequest("FullName is required.");
+
+        if (string.IsNullOrWhiteSpace(dto.Email))
+            return BadRequest("Email is required.");
+
         var candidate = new Candidate
         {
             FullName = dto.FullName.Trim(),
-            Email = dto.Email.Trim().ToLower(),
-            Phone = dto.Phone.Trim(),
+            Email = dto.Email.Trim().ToLowerInvariant(),
+
+            // If Candidate.Phone is non-nullable string, don't assign null.
+            Phone = string.IsNullOrWhiteSpace(dto.Phone) ? "" : dto.Phone.Trim(),
+
             Status = "New"
         };
+
+        // Only set RecruiterNotes if your Candidate entity has it
+        if (!string.IsNullOrWhiteSpace(dto.Notes))
+            candidate.RecruiterNotes = dto.Notes.Trim();
 
         _db.Candidates.Add(candidate);
         await _db.SaveChangesAsync();
@@ -54,16 +67,20 @@ public class CandidatesController : ControllerBase
     public async Task<IActionResult> UpdateStatus(Guid id, UpdateCandidateStatusDto dto)
     {
         var candidate = await _db.Candidates.FindAsync(id);
-        if (candidate is null) return NotFound();
+        if (candidate is null) return NotFound("Candidate not found.");
 
         var allowed = new[] { "New", "Shortlisted", "Interview", "Rejected", "Hired" };
-        if (!allowed.Contains(dto.Status))
+        if (string.IsNullOrWhiteSpace(dto.Status) || !allowed.Contains(dto.Status))
             return BadRequest("Invalid status.");
 
         var before = new { candidate.Status, candidate.RecruiterNotes };
 
         candidate.Status = dto.Status;
-        candidate.RecruiterNotes = dto.RecruiterNotes;
+
+        // If RecruiterNotes exists and is nullable, this is fine.
+        candidate.RecruiterNotes = string.IsNullOrWhiteSpace(dto.RecruiterNotes)
+            ? candidate.RecruiterNotes
+            : dto.RecruiterNotes.Trim();
 
         await _db.SaveChangesAsync();
 
