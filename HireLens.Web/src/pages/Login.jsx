@@ -16,7 +16,7 @@ export default function Login() {
     setErr("");
     try {
       setLoading(true);
-      const res = await http.post("/api/auth/login", { email, password });
+      const res = await http.post("/auth/login", { email, password });
       login(res.data);
       nav("/dashboard");
     } catch (e2) {

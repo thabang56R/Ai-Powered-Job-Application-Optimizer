@@ -16,16 +16,16 @@ export default function CandidateDetail() {
   const load = async () => {
     setLoading(true);
 
-    const list = await http.get("/api/candidates");
+    const list = await http.get("/candidates");
     const c = list.data.find((x) => x.id === id) ?? null;
     setCandidate(c);
     setNotes(c?.recruiterNotes ?? "");
 
-    const ev = await http.get(`/api/evaluations/candidate/${id}`).catch(() => ({ data: [] }));
+    const ev = await http.get(`/evaluations/candidate/${id}`).catch(() => ({ data: [] }));
     setEvals(ev.data ?? []);
 
     const au = await http
-      .get(`/api/audit?entityType=Candidate&entityId=${id}`)
+      .get(`/audit?entityType=Candidate&entityId=${id}`)
       .catch(() => ({ data: [] }));
     setAudit(au.data ?? []);
 
@@ -45,7 +45,7 @@ export default function CandidateDetail() {
     setMsg("");
     setSaving(true);
     try {
-      await http.patch(`/api/candidates/${candidate.id}/status`, {
+      await http.patch(`/candidates/${candidate.id}/status`, {
         status: candidate.status,
         recruiterNotes: notes,
       });

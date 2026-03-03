@@ -18,11 +18,11 @@ export default function Candidates() {
 
   const load = async () => {
     setLoading(true);
-    const cRes = await http.get("/api/candidates");
+    const cRes = await http.get("/candidates");
     setRows(cRes.data);
 
     // You may not have a JobsController GET endpoint yet — we’ll add if missing.
-    const jRes = await http.get("/api/jobs").catch(() => ({ data: [] }));
+    const jRes = await http.get("/jobs").catch(() => ({ data: [] }));
     setJobs(jRes.data ?? []);
     setLoading(false);
   };
@@ -32,7 +32,7 @@ export default function Candidates() {
   const createCandidate = async () => {
     setErr("");
     try {
-      await http.post("/api/candidates", form);
+      await http.post("/candidates", form);
       setForm({ fullName: "", email: "", phone: "" });
       await load();
     } catch (e) {

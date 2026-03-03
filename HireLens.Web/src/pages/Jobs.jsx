@@ -7,7 +7,7 @@ export default function Jobs() {
   const [err, setErr] = React.useState("");
 
   const load = async () => {
-    const res = await http.get("/api/jobs").catch(() => ({ data: [] }));
+    const res = await http.get("/jobs").catch(() => ({ data: [] }));
     setJobs(res.data ?? []);
   };
 
@@ -16,7 +16,7 @@ export default function Jobs() {
   const createJob = async () => {
     setErr("");
     try {
-      await http.post("/api/evaluations/jobs", form); // this matches our backend controller
+      await http.post("/evaluations/jobs", form); 
       setForm({ title: "", company: "", descriptionText: "" });
       await load();
     } catch (e) {

@@ -19,7 +19,7 @@ export default function Register() {
     setErr("");
     try {
       setLoading(true);
-      const res = await http.post("/api/auth/register", { fullName, email, password, role });
+      const res = await http.post("/auth/register", { fullName, email, password, role });
       login(res.data);
       nav("/dashboard");
     } catch (e2) {

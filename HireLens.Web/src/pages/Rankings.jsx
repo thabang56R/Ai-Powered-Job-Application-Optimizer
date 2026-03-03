@@ -17,7 +17,7 @@ export default function Rankings() {
   React.useEffect(() => {
     (async () => {
       try {
-        const res = await http.get("/api/jobs");
+        const res = await http.get("/jobs");
         setJobs(res.data ?? []);
       } catch (e) {
         setErr(String(e?.response?.data ?? e.message));
@@ -36,7 +36,7 @@ export default function Rankings() {
 
     try {
       setLoading(true);
-      const res = await http.get(`/api/rankings/jobs/${jobId}/candidates`);
+      const res = await http.get(`/rankings/jobs/${jobId}/candidates`);
       setData(res.data);
     } catch (e) {
       setErr(String(e?.response?.data ?? e.message));
@@ -52,7 +52,7 @@ export default function Rankings() {
 
     try {
       setExplainLoading(true);
-      const res = await http.get(`/api/rankings/jobs/${jobId}/candidates/${candidateId}/explain`);
+      const res = await http.get(`/rankings/jobs/${jobId}/candidates/${candidateId}/explain`);
       setExplainData(res.data);
     } catch (e) {
       setExplainErr(String(e?.response?.data ?? e.message));
