@@ -71,10 +71,14 @@ builder.Services.AddCors(opt =>
 {
     opt.AddPolicy("AllowFrontend", p =>
     {
-        p.WithOrigins(
-            "http://localhost:5173",
-            "https://ai-powered-job-applicatio-git-6aa71b-thabangs-projects-c8541678.vercel.app"
-        )
+        p.SetIsOriginAllowed(origin =>
+        {
+            if (origin == "http://localhost:5173") return true;
+
+            return Uri.TryCreate(origin, UriKind.Absolute, out var uri)
+                   && uri.Scheme == "https"
+                   && uri.Host.EndsWith(".vercel.app");
+        })
         .AllowAnyHeader()
         .AllowAnyMethod();
     });
