@@ -25,79 +25,55 @@ public class ResumesController : ControllerBase
     }
 
     [HttpPost("upload")]
-    [RequestSizeLimit(15_000_000)] // 15MB
-    public async Task<IActionResult> Upload([FromForm] Guid candidateId, [FromForm] IFormFile file)
+[Consumes("multipart/form-data")]
+[RequestSizeLimit(15_000_000)] // 15MB
+public async Task<IActionResult> Upload([FromForm] ResumeUploadDto dto)
+{
+    if (dto.CandidateId == Guid.Empty) return BadRequest("candidateId is required.");
+    if (dto.File == null || dto.File.Length == 0) return BadRequest("PDF file is required.");
+
+    var candidate = await _db.Candidates.FindAsync(dto.CandidateId);
+    if (candidate is null) return NotFound("Candidate not found.");
+
+    var file = dto.File;
+
+    var contentType = file.ContentType?.ToLower() ?? "";
+    var isPdf = contentType.Contains("pdf") || file.FileName.EndsWith(".pdf", StringComparison.OrdinalIgnoreCase);
+    if (!isPdf) return BadRequest("Only PDF files are supported.");
+
+    if (file.Length > 15_000_000) return BadRequest("File too large (max 15MB).");
+
+    string extracted;
+    await using (var stream = file.OpenReadStream())
     {
-        if (candidateId == Guid.Empty) return BadRequest("candidateId is required.");
-        if (file == null || file.Length == 0) return BadRequest("PDF file is required.");
-
-        var candidate = await _db.Candidates.FindAsync(candidateId);
-        if (candidate is null) return NotFound("Candidate not found.");
-
-        var contentType = file.ContentType?.ToLower() ?? "";
-        var isPdf = contentType.Contains("pdf") || file.FileName.EndsWith(".pdf", StringComparison.OrdinalIgnoreCase);
-        if (!isPdf) return BadRequest("Only PDF files are supported.");
-
-        if (file.Length > 15_000_000) return BadRequest("File too large (max 15MB).");
-
-        // 1) Extract text
-        string extracted;
-        await using (var stream = file.OpenReadStream())
-        {
-            extracted = _extractor.ExtractTextFromPdf(stream);
-        }
-
-        extracted = CleanExtractedText(extracted);
-
-        if (string.IsNullOrWhiteSpace(extracted))
-            return BadRequest("Could not extract text from this PDF (it may be scanned images).");
-
-        // 2) Try to create embedding (optional)
-        string? embeddingJson = null;
-        bool embeddingCreated = false;
-
-        try
-        {
-            var vec = await _embed.CreateEmbeddingAsync(extracted);
-            embeddingJson = JsonSerializer.Serialize(vec);
-            embeddingCreated = true;
-        }
-        catch (InvalidOperationException)
-        {
-            // OpenAI key missing -> allow upload anyway (embedding remains null)
-            embeddingJson = null;
-            embeddingCreated = false;
-        }
-        catch
-        {
-            // Any embeddings failure should not block upload
-            embeddingJson = null;
-            embeddingCreated = false;
-        }
-
-        // 3) Save resume
-        var resume = new Resume
-        {
-            CandidateId = candidate.Id,
-            FileName = file.FileName,
-            ContentType = file.ContentType ?? "application/pdf",
-            ContentText = extracted,
-            EmbeddingJson = embeddingJson
-        };
-
-        _db.Resumes.Add(resume);
-        await _db.SaveChangesAsync();
-
-        return Ok(new
-        {
-            resume.Id,
-            resume.CandidateId,
-            resume.FileName,
-            resume.UploadedAtUtc,
-            extractedChars = resume.ContentText.Length,
-            embeddingCreated
-        });
+        extracted = _extractor.ExtractTextFromPdf(stream);
     }
+
+    extracted = CleanExtractedText(extracted);
+
+    if (string.IsNullOrWhiteSpace(extracted))
+        return BadRequest("Could not extract text from this PDF (it may be scanned images).");
+
+    var resume = new Resume
+    {
+        CandidateId = candidate.Id,
+        FileName = file.FileName,
+        ContentType = file.ContentType ?? "application/pdf",
+        ContentText = extracted
+    };
+
+    _db.Resumes.Add(resume);
+    await _db.SaveChangesAsync();
+
+    return Ok(new
+    {
+        resume.Id,
+        resume.CandidateId,
+        resume.FileName,
+        resume.UploadedAtUtc,
+        extractedChars = resume.ContentText.Length
+    });
+}
 
     
     [HttpGet("latest/{candidateId:guid}")]
