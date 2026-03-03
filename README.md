@@ -6,7 +6,7 @@
 ![License](https://img.shields.io/badge/License-MIT-green)
 
 
-# 🚀 HireLens – AI-Powered Job Application Optimizer + Semantic Ranking (Fullstack-project, NET + React) 
+# 🚀 HireLens – AI-Powered Job Application Optimizer + Semantic Ranking (Fullstack-project,.NET + React) 
 
 HireLens is an enterprise-grade AI recruitment platform designed to modernize hiring through intelligent automation, AI-powered evaluation, and transparent decision-making.
 
