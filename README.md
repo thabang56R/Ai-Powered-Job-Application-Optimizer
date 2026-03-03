@@ -8,48 +8,136 @@
 
 # HireLens — AI Resume Screening + Semantic Ranking (FULLSTACK-project, .NET + React)
 
+🚀 HireLens – AI-Powered Job Application Optimizer
+
+An enterprise-grade AI recruitment platform designed to modernize hiring through intelligent automation, AI-powered evaluation, and transparent decision-making.
+
 🌟 Vision
 
-HireLens aims to redefine modern recruitment by combining intelligent automation, AI-powered evaluation, and transparent decision-making into a single seamless platform. The vision is to empower recruiters to make faster, smarter, and data-driven hiring decisions while giving candidates a fair, evidence-based evaluation process. By integrating AI scoring, explainability, and structured workflows, HireLens strives to bridge the gap between human intuition and machine intelligence in the hiring ecosystem
+HireLens aims to redefine modern recruitment by combining intelligent automation, AI-driven evaluation, and transparent decision-making into one seamless platform.
 
-🚀** HireLens – AI-Powered Job Application Optimizer**
+The mission is to empower recruiters to make faster, smarter, data-driven hiring decisions while ensuring candidates receive fair, evidence-based evaluations.
 
-An enterprise-style AI recruitment platform built with:
+By integrating AI scoring, explainability, and structured workflows, HireLens bridges the gap between human intuition and machine intelligence in the hiring ecosystem.
 
-ASP.NET Core 8
-PostgreSQL (Render)
-React + Vite (Vercel)
-OpenAI
-JWT Authentication
-Docker
-GitHub Actions CI
+🌍 Live Demo
 
-  🌍 Live Demo
-
-**Frontend (Vercel):**
+Frontend (Vercel):
 https://ai-powered-job-application-optimizer-vupphwx74.vercel.app
 
-  **Backend API (Render):**
+Backend API (Render):
 https://ai-powered-job-application-optimizer.onrender.com/swagger
 
-  🐳 Docker
-
-Backend runs in container:
-
-docker build -t hirelens-api .
-docker run -p 8080:8080 hirelens-api
-
-  🏗 Architecture
+🏗 Architecture
 
 Frontend (Vercel)
 ⬇
 Backend API (Render – Dockerized)
 ⬇
-PostgreSQL Database (Render Managed DB
+PostgreSQL Database (Render Managed DB)
 
-  ⚙️ Environment Variables (Production)
+🛠 Tech Stack
+Backend
 
-Render Backend requires:
+ASP.NET Core 8
+
+Entity Framework Core
+
+PostgreSQL (Npgsql)
+
+JWT Authentication
+
+Swagger
+
+Frontend
+
+React (Vite)
+
+Axios
+
+JWT Token Storage
+
+AI
+
+OpenAI (Evaluation + Embeddings)
+
+Infrastructure
+
+Render (API + Database)
+
+Vercel (Frontend)
+
+GitHub Actions (CI/CD)
+
+Docker
+
+✨ Features
+🔐 Authentication
+
+JWT-based authentication
+
+Secure password hashing
+
+Role-based access ready
+
+👤 Candidate Management
+
+Create candidate
+
+Update status (New → Shortlisted → Interview → Hired → Rejected)
+
+Recruiter notes
+
+Audit logging
+
+📄 Resume Upload
+
+PDF-only upload (15MB max)
+
+Text extraction using PdfPig
+
+Cleaned text storage
+
+Ready for AI evaluation
+
+🤖 AI Evaluation
+
+OpenAI integration
+
+Skill extraction
+
+Match scoring
+
+Embedding generation
+
+Explainability service
+
+📊 Ranking Engine
+
+Score-based candidate ranking
+
+Evaluation tracking
+
+🧾 Audit Trail
+
+Tracks:
+
+Who changed status
+
+Before/After snapshot
+
+Timestamp
+
+🐳 Docker
+
+Build and run backend container:
+
+docker build -t hirelens-api .
+docker run -p 8080:8080 hirelens-api
+⚙️ Environment Variables (Production)
+
+Render backend requires:
+
 ConnectionStrings__DefaultConnection=Host=...;Port=5432;Database=...;Username=...;Password=...;SSL Mode=Require;Trust Server Certificate=true;
 
 Jwt__Key=VERY_LONG_SECRET_32+_CHARS
@@ -59,120 +147,73 @@ Jwt__Audience=HireLens
 OpenAI__ApiKey=sk-...
 OpenAI__Model=gpt-4o-mini
 OpenAI__EmbeddingModel=text-embedding-3-small
+🧪 CI/CD
 
-  🧪 CI/CD
-  
-GitHub Actions:
+GitHub Actions pipeline includes:
+
 .NET Restore
+
 Build
+
 Tests
 
 Frontend Build
 
-## Tech Stack
-**Backend:** ASP.NET Core, EF Core, SQL Server, JWT Authentication, Npgsql, Swagger 
-**Frontend:** React (Vite), Axios, JWT storage 
-**AI:** OpenAI (optional for embeddings + evaluation)
-**Infrastructure:**Render(API,DB), Vercel(frontend), Github Actions(CI), Docker
+💻 Local Setup (Without Docker)
+Backend
 
----
+Update HireLens.Api/appsettings.json:
 
-✨ **Features**
+ConnectionStrings:DefaultConnection
 
-🔐 **Authentication**
+Jwt:Key (32+ characters)
 
-JWT-based auth
-Secure password hashing
-Role-based access ready
+OpenAI:ApiKey (optional)
 
-👤 **Candidate Management**
+Run migrations:
 
-Create candidate
-Update status (New → Shortlisted → Interview → Hired → Rejected)
-Recruiter notes
-Audit logging
-
-📄 **Resume Upload**
-
-PDF-only upload (15MB max)
-Text extraction using PdfPig
-Cleaned text storage
-Ready for AI evaluation
-
-🤖 **AI Evaluation**
-
-OpenAI integration
-Skill extraction
-Match scoring
-Embedding generation
-Explainability service
-
-📊 **Ranking Engine**
-
-Score-based candidate ranking
-Evaluation tracking
-
-🧾 **Audit Trail**
-
-Tracks:
-
-Who changed status
-Before/After snapshot
-Timestamp
-
-## Local Setup (without Docker)
-
-### Backend
-1. Update `HireLens.Api/appsettings.json`:
-   - `ConnectionStrings:DefaultConnection`
-   - `Jwt:Key` (32+ chars)
-   - `OpenAI:ApiKey` (optional)
-
-2. Run migrations:
-```bash
 dotnet ef database update
 
 Run API:
 
 dotnet run --project HireLens.Api
 
-API Swagger:
+Swagger:
 
 http://localhost:5159/swagger
- (port may differ)
-
 Frontend
 cd HireLens.Web
 npm install
 npm run dev
-Docker Compose
+🐳 Docker Compose
 
-From repo root:
+From repository root:
 
 docker compose up --build
 
-Web: http://localhost:3000
+Web:
 
-API: http://localhost:8080/swagger
+http://localhost:3000
 
-Key Endpoints
+API:
 
+http://localhost:8080/swagger
+🔑 Key Endpoints
 POST /api/auth/register
 POST /api/auth/login
-GET /api/candidates
-POST /api/resumes/upload (multipart form-data: candidateId, file)
+GET  /api/candidates
+POST /api/resumes/upload
 POST /api/evaluations/jobs
 POST /api/evaluations
-GET /api/rankings/jobs/{jobId}/candidates
-GET /api/rankings/jobs/{jobId}/candidates/{candidateId}/explain
-
-Tests
+GET  /api/rankings/jobs/{jobId}/candidates
+GET  /api/rankings/jobs/{jobId}/candidates/{candidateId}/explain
+🧪 Tests
 dotnet test
-Notes
+📝 Notes
 
-If OpenAI key is not configured, evaluation/embeddings endpoints return a short 400 error.
+If OpenAI key is not configured, evaluation endpoints return a short 400 error.
 
-PDF text extraction works for text-based PDFs (scanned/image PDFs require OCR).
+PDF extraction works for text-based PDFs. Scanned/image PDFs require OCR.
 
 📌 Future Improvements
 
@@ -191,5 +232,8 @@ Production-grade logging (Serilog)
 Rate limiting
 
 👨‍💻 Author
+
 Thabang Rakeng
 Full-Stack Developer | AI-Focused Backend Engineer
+
+
