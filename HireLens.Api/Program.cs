@@ -121,3 +121,12 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
+
+app.MapGet("/", () => Results.Ok(new
+{
+    name = "HireLens API",
+    status = "ok",
+    docs = "/swagger"
+}));
+
+app.MapGet("/health", () => Results.Ok("ok"));
