@@ -1,5 +1,5 @@
-using System.Text.Json;
 using HireLens.Api.Data;
+using HireLens.Api.DTOs;
 using HireLens.Api.Entities;
 using HireLens.Api.Services;
 using Microsoft.AspNetCore.Authorization;
@@ -25,57 +25,60 @@ public class ResumesController : ControllerBase
     }
 
     [HttpPost("upload")]
-[Consumes("multipart/form-data")]
-[RequestSizeLimit(15_000_000)] // 15MB
-public async Task<IActionResult> Upload([FromForm] ResumeUploadDto dto)
-{
-    if (dto.CandidateId == Guid.Empty) return BadRequest("candidateId is required.");
-    if (dto.File == null || dto.File.Length == 0) return BadRequest("PDF file is required.");
-
-    var candidate = await _db.Candidates.FindAsync(dto.CandidateId);
-    if (candidate is null) return NotFound("Candidate not found.");
-
-    var file = dto.File;
-
-    var contentType = file.ContentType?.ToLower() ?? "";
-    var isPdf = contentType.Contains("pdf") || file.FileName.EndsWith(".pdf", StringComparison.OrdinalIgnoreCase);
-    if (!isPdf) return BadRequest("Only PDF files are supported.");
-
-    if (file.Length > 15_000_000) return BadRequest("File too large (max 15MB).");
-
-    string extracted;
-    await using (var stream = file.OpenReadStream())
+    [Consumes("multipart/form-data")]
+    [RequestSizeLimit(15_000_000)] // 15MB
+    public async Task<IActionResult> Upload([FromForm] ResumeUploadDto dto)
     {
-        extracted = _extractor.ExtractTextFromPdf(stream);
+        if (dto.CandidateId == Guid.Empty) return BadRequest("candidateId is required.");
+        if (dto.File == null || dto.File.Length == 0) return BadRequest("PDF file is required.");
+
+        var candidate = await _db.Candidates.FindAsync(dto.CandidateId);
+        if (candidate is null) return NotFound("Candidate not found.");
+
+        var file = dto.File;
+
+        var contentType = file.ContentType?.ToLower() ?? "";
+        var isPdf = contentType.Contains("pdf") ||
+                    file.FileName.EndsWith(".pdf", StringComparison.OrdinalIgnoreCase);
+
+        if (!isPdf) return BadRequest("Only PDF files are supported.");
+        if (file.Length > 15_000_000) return BadRequest("File too large (max 15MB).");
+
+        string extracted;
+        await using (var stream = file.OpenReadStream())
+        {
+            extracted = _extractor.ExtractTextFromPdf(stream);
+        }
+
+        extracted = CleanExtractedText(extracted);
+
+        if (string.IsNullOrWhiteSpace(extracted))
+            return BadRequest("Could not extract text from this PDF (it may be scanned images).");
+
+        var resume = new Resume
+        {
+            CandidateId = candidate.Id,
+            FileName = file.FileName,
+            ContentType = file.ContentType ?? "application/pdf",
+            ContentText = extracted
+            // If your Resume entity has EmbeddingJson and you want to create it here,
+            // tell me and I'll add the clean embedding save logic.
+        };
+
+        _db.Resumes.Add(resume);
+        await _db.SaveChangesAsync();
+
+        return Ok(new
+        {
+            resume.Id,
+            resume.CandidateId,
+            resume.FileName,
+            resume.UploadedAtUtc,
+            extractedChars = resume.ContentText.Length
+        });
     }
 
-    extracted = CleanExtractedText(extracted);
-
-    if (string.IsNullOrWhiteSpace(extracted))
-        return BadRequest("Could not extract text from this PDF (it may be scanned images).");
-
-    var resume = new Resume
-    {
-        CandidateId = candidate.Id,
-        FileName = file.FileName,
-        ContentType = file.ContentType ?? "application/pdf",
-        ContentText = extracted
-    };
-
-    _db.Resumes.Add(resume);
-    await _db.SaveChangesAsync();
-
-    return Ok(new
-    {
-        resume.Id,
-        resume.CandidateId,
-        resume.FileName,
-        resume.UploadedAtUtc,
-        extractedChars = resume.ContentText.Length
-    });
-}
-
-    
+    // Get latest resume for candidate
     [HttpGet("latest/{candidateId:guid}")]
     public async Task<IActionResult> Latest(Guid candidateId)
     {
