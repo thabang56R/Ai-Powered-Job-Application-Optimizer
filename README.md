@@ -47,12 +47,15 @@ This project demonstrates full-stack architecture, API design, and scalable back
 Frontend (React)
        │
        ▼
+       
 Backend API (.NET Core)
        │
        ▼
+       
 Database (PostgreSQL)
        │
        ▼
+       
 AI Service (OpenAI)
 
 ---
