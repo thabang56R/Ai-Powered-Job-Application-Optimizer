@@ -40,6 +40,19 @@ Backend API (Render – Dockerized)
 ⬇  
 PostgreSQL Database (Render Managed DB)
 
+## 🧩 System Design Focus
+This project demonstrates full-stack architecture, API design, and scalable backend development using modern technologies.
+Frontend (React)
+       │
+       ▼
+Backend API (.NET Core)
+       │
+       ▼
+Database (PostgreSQL)
+       │
+       ▼
+AI Service (OpenAI)
+
 ---
 
 ## 🛠 Tech Stack
