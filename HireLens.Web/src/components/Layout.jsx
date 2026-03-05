@@ -61,12 +61,6 @@ export default function Layout() {
                 background: "#12121a",
                 color: "white",
                 cursor: "pointer",
-                @media only screen and (max-width:767px){
-                body{font-size:16px;}
-                .container{flex-direction:column;}
-                button{padding: 15px;}
-  
-                }
               }}
             >
               Logout
