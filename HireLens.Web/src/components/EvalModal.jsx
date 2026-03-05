@@ -28,10 +28,10 @@ export default function EvalModal({ open, onClose, candidate, jobs }) {
     (async () => {
       if (!safeCandidate.id) return;
       try {
-        const res = await http.get(`/api/resumes/latest/${safeCandidate.id}`);
+        const res = await http.get(`/resumes/latest/${safeCandidate.id}`);
         setLatestResume(res.data);
       } catch (e) {
-        // 404 is normal if no resume yet
+        
         setLatestResume(null);
       }
     })();
@@ -52,7 +52,7 @@ export default function EvalModal({ open, onClose, candidate, jobs }) {
 
     try {
       setLoadingUpload(true);
-      const res = await http.post("/api/resumes/upload", form, {
+      const res = await http.post("/resumes/upload", form, {
         headers: { "Content-Type": "multipart/form-data" },
       });
       setLatestResume(res.data);
@@ -74,7 +74,7 @@ export default function EvalModal({ open, onClose, candidate, jobs }) {
 
     try {
       setLoadingEval(true);
-      const res = await http.post("/api/evaluations", {
+      const res = await http.post("/evaluations", {
         candidateId: safeCandidate.id,
         jobPostingId: jobId,
         resumeTextOverride: null,
@@ -216,7 +216,7 @@ const backdrop = {
   display: "grid",
   placeItems: "center",
   padding: 16,
-  zIndex: 9999, // ✅ ensure it’s on top
+  zIndex: 9999, 
 };
 
 const modal = {
@@ -294,3 +294,9 @@ const errBox = {
   color: "#ffb4b4",
   fontSize: 13,
 };
+@media only screen and (max-width:767px){
+  body{font-size:16px;}
+  .container{flex-direction:column;}
+  button{padding: 15px;}
+  
+}

@@ -76,3 +76,9 @@ const select = {
   background: "#0b0b0f",
   color: "white",
 };
+@media only screen and (max-width:767px){
+  body{font-size:16px;}
+  .container{flex-direction:column;}
+  button{padding: 15px;}
+  
+}
