@@ -294,9 +294,3 @@ const errBox = {
   color: "#ffb4b4",
   fontSize: 13,
 };
-@media only screen and (max-width:767px){
-  body{font-size:16px;}
-  .container{flex-direction:column;}
-  button{padding: 15px;}
-
-};
