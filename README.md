@@ -8,6 +8,8 @@
 
 # 🚀 HireLens – AI-Powered Job Application Optimizer + Semantic Ranking (Fullstack-project,.NET + React) 
 
+![Profile Views](https://komarev.com/ghpvc/?username=thabang56R&color=green)
+
 HireLens is an enterprise-grade AI recruitment platform designed to modernize hiring through intelligent automation, AI-powered evaluation, and transparent decision-making.
 
 ---
