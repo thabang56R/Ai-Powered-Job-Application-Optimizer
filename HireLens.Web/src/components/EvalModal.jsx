@@ -298,5 +298,5 @@ const errBox = {
   body{font-size:16px;}
   .container{flex-direction:column;}
   button{padding: 15px;}
-  
-}
+
+};

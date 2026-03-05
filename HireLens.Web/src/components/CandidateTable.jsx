@@ -81,4 +81,4 @@ const select = {
   .container{flex-direction:column;}
   button{padding: 15px;}
   
-}
+};
